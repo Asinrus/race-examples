@@ -1,4 +1,4 @@
-package example;
+package io.github.asinrus.race.example;
 
 import io.github.asinrus.race.core.Configuration;
 import org.junit.jupiter.api.Test;

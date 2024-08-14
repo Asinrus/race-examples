@@ -1,4 +1,4 @@
-package example;
+package io.github.asinrus.race.example;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package example;
+package io.github.asinrus.race.example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;

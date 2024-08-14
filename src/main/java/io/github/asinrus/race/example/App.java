@@ -1,4 +1,4 @@
-package example;
+package io.github.asinrus.race.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

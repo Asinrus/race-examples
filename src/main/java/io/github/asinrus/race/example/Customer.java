@@ -1,4 +1,4 @@
-package example;
+package io.github.asinrus.race.example;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
