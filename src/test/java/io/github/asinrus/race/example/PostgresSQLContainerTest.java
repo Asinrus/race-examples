@@ -1,5 +1,6 @@
 package io.github.asinrus.race.example;
 
+import io.github.asinrus.race.core.Configuration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,8 +30,11 @@ public class PostgresSQLContainerTest {
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:14");
 
     @Test
-    void run() {
+    void testWithoutNaming() {
         race(() -> customerService.changeName(1L, "John"))
+                .withConfiguration(Configuration.builder()
+                        .setNumThreads(2)
+                        .build())
                 .withAssertion(executionResult -> {
                     var errors = executionResult.errors();
                     var results = executionResult.results();
@@ -41,14 +45,14 @@ public class PostgresSQLContainerTest {
     }
 
     @Test
-    void complexTest() {
+    void testWithNaming() {
         race(Map.of
-                ("John", () -> customerService.changeName(1L, "John"),
+                ("Mike", () -> customerService.changeName(1L, "Mike"),
                         "Derek", () -> customerService.changeName(1L, "Derek")))
                 .withAssertion(executionResult -> {
                     var derekResult = executionResult.get("Derek");
-                    var johnResult = executionResult.get("John");
-                    var oneContainsError = johnResult.isHasError() ^ derekResult.isHasError();
+                    var mikeResult = executionResult.get("Mike");
+                    var oneContainsError = mikeResult.isHasError() ^ derekResult.isHasError();
                     assertTrue(oneContainsError);
                 })
                 .go();

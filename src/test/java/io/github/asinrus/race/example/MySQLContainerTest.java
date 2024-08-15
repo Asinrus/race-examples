@@ -28,7 +28,7 @@ public class MySQLContainerTest {
     static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:oraclelinux8");
 
     @Test
-    void run() {
+    void testWithoutNaming() {
         race(() -> customerService.changeName(1L, "John"))
                 .withAssertion(executionResult -> {
                     var errors = executionResult.errors();
@@ -40,14 +40,14 @@ public class MySQLContainerTest {
     }
 
     @Test
-    void complexTest() {
+    void testWithNaming() {
         race(Map.of
-                ("John", () -> customerService.changeName(1L, "John"),
+                ("Mike", () -> customerService.changeName(1L, "Mike"),
                         "Derek", () -> customerService.changeName(1L, "Derek")))
                 .withAssertion(executionResult -> {
                     var derekResult = executionResult.get("Derek");
-                    var johnResult = executionResult.get("John");
-                    assertTrue(!derekResult.isHasError() && !johnResult.isHasError());
+                    var mikeResult = executionResult.get("Mike");
+                    assertTrue(!derekResult.isHasError() && !mikeResult.isHasError());
                 })
                 .go();
     }
