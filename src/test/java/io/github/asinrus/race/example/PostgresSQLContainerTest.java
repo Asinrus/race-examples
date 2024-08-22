@@ -57,7 +57,7 @@ public class PostgresSQLContainerTest {
                 ("Mike", () -> customerService.changeName(1L, "Mike"),
                         "Derek", () -> customerService.changeName(1L, "Derek"));
         race(tasks)
-                .withAssertion(standardResultOfContentionOf2Operation("Mike", "Derek"))
+                .withAssertion(standardResultOfConflictedOperations("Mike", "Derek"))
                 .go();
     }
 
@@ -66,11 +66,11 @@ public class PostgresSQLContainerTest {
         raceByFutures(Map.of
                 ("Tom", customerService.changeNameAsync(1L, "Tom"),
                         "Joshua", customerService.changeNameAsync(1L, "Joshua")))
-                .withAssertion(standardResultOfContentionOf2Operation("Tom", "Joshua"))
+                .withAssertion(standardResultOfConflictedOperations("Tom", "Joshua"))
                 .go();
     }
 
-    private Consumer<ComplexExecutionResult<String, String>> standardResultOfContentionOf2Operation(String op1Key, String op2Key) {
+    private Consumer<ComplexExecutionResult<String, String>> standardResultOfConflictedOperations(String op1Key, String op2Key) {
         return (result) -> {
             var op1Result = result.get(op1Key);
             var op2Result = result.get(op2Key);
